@@ -1,0 +1,719 @@
+<div [hidden]="isLoadingSpinnerHidden">
+  <mat-spinner style="margin: auto;"></mat-spinner>
+</div>
+<div [hidden]="isContentHidden">
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+    <li class="nav-item">
+      <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#salesDelivery" role="tab"
+        aria-controls="salesDelivery" aria-selected="true">Sales Delivery Detail</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="document-tab" data-toggle="tab" href="#document" role="tab" aria-controls="document"
+        aria-selected="false" (click)="listDocument()">Document</a>
+    </li>
+    <li class="nav-item" [hidden]="isActivityTabHidden">
+      <a class="nav-link" id="activities-tab" data-toggle="tab" href="#activities" role="tab" aria-controls="activities"
+        aria-selected="false" (click)="listActivity()">Activities</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="salesDelivery" role="tabpanel" aria-labelledby="sales-tab">
+      <div class="card card-default">
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td style="text-align: right;">
+                <button class="btn btn-primary" (click)="btnSaveSalesClick()" style="margin-right: 5px;"
+                  id="btnSaveSales" disabled>
+                  <i class="fa fa-save fa-fw"></i> Save
+                </button>
+                <button class="btn btn-primary" (click)="btnLockSalesClick()" style="margin-right: 5px;"
+                  id="btnLockSales" disabled>
+                  <i class="fa fa-lock fa-fw"></i> Lock
+                </button>
+                <button class="btn btn-primary" (click)="btnUnlockSalesClick()" style="margin-right: 5px;"
+                  id="btnUnlockSales" disabled>
+                  <i class="fa fa-unlock fa-fw"></i> Unlock
+                </button>
+                <button class="btn btn-primary" (click)="btnPrintSalesDelivery()" style="margin-right: 5px;"
+                  id="btnPrint">
+                  <i class="fa fa-print fa-fw"></i> Print
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/sales" id="btnCloseSales">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label form-group-label">SD No.</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [(ngModel)]="salesDeliveryDetailModel.SDNumber"
+                    placeholder="SD Number..." disabled>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">SD Date</label>
+                <div class="col-sm-8">
+                  <wj-input-date #cboShopOrderDate [disabled]="isLocked" [(ngModel)]="salesDeliveryDetailModel.SDDate"
+                    format="MMMM dd, yyyy" style="width: 100%; padding: 3px;">
+                  </wj-input-date>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Renewal Date</label>
+                <div class="col-sm-8">
+                  <wj-input-date #cboShopOrderDate [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.RenewalDate" format="MMMM dd, yyyy"
+                    style="width: 100%; padding: 3px;">
+                  </wj-input-date>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Customer</label>
+                <div class="col-sm-8">
+                  <div class="input-group">
+                    <input type="text" [(ngModel)]="selectedCustomer" class="form-control" aria-label=""
+                      [disabled]="isLocked">
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="btnCustomerListClick(customerModalTemplate)"><i
+                          class="fa fa-plus"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">SI Number</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboSalesInvoice [(ngModel)]="salesDeliveryDetailModel.SIId"
+                    [itemsSource]="cboSalesInvoiceObservableArray" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'SINumber'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
+                  </wj-combo-box>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Product</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboProduct [(ngModel)]="salesDeliveryDetailModel.ProductId"
+                    [itemsSource]="cboProductObservableArray" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'ProductDescription'" [selectedValuePath]="'Id'"
+                    style="width: 100%; padding: 3px;" [disabled]="isLocked">
+                  </wj-combo-box>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Lead</label>
+                <div class="col-sm-8">
+                  <div class="input-group">
+                    <input type="text" [(ngModel)]="selectedLead" class="form-control" aria-label=""
+                      [disabled]="isLocked">
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="btnLeadListClick(leadModalTemplate)"><i
+                          class="fa fa-plus"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Person</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.ContactPerson" placeholder="Contact Person...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Position</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.ContactPosition" placeholder="Contact Position...">
+                </div>
+                <br /><br />
+
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Email</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.ContactEmail" placeholder="Contact Email...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Contact Phone No.</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.ContactPhoneNumber" placeholder="Contact Phone Number...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Particulars</label>
+                <div class="col-sm-8">
+                  <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
+                    [(ngModel)]="salesDeliveryDetailModel.Particulars" placeholder="Remarks..." rows="5">
+                  </textarea>
+                </div>
+                <br /><br /><br /><br /><br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboAssignedToUser [(ngModel)]="salesDeliveryDetailModel.AssignedToUserId"
+                    [itemsSource]="cboAssignedToUserObservable" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;"
+                    [disabled]="isLocked">
+                  </wj-combo-box>
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
+                <div class="col-sm-8">
+                  <wj-combo-box #cboSalesStatus [disabled]="isLocked" [(ngModel)]="salesDeliveryDetailModel.Status"
+                    [itemsSource]="cboSalesStatusObservable" [isEditable]="false" [isRequired]="true"
+                    [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
+                  </wj-combo-box>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-default" style="margin-top: 10px;">
+        <div class="card-header">
+          User stamp
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>Created by:</p>
+              <div style="padding-left: 10px;">
+                <i class="fa fa-key"></i>&nbsp;
+                <label id="createdBy">
+                  {{
+                  salesDeliveryDetailModel != null ?
+                  salesDeliveryDetailModel.CreatedByUser : 'NA'
+                  }}
+                </label>
+                <br />
+                <small>
+                  <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+                  <span id="createdDate">
+                    {{
+                    salesDeliveryDetailModel != null ?
+                    salesDeliveryDetailModel.CreatedDateTime : 'mm/dd/yyyy'
+                    }}
+                  </span>
+                </small>
+              </div>
+              <br />
+            </div>
+            <div class="col-md-6">
+              <p>Updated by:</p>
+              <div style="padding-left: 10px;">
+                <i class="fa fa-key"></i>&nbsp;
+                <label id="updatedBy">
+                  {{
+                  salesDeliveryDetailModel != null ?
+                  salesDeliveryDetailModel.UpdatedByUser : 'NA'
+                  }}
+                </label>
+                <br />
+                <small>
+                  <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+                  <span id="updatedDate">
+                    {{
+                    salesDeliveryDetailModel != null ?
+                    salesDeliveryDetailModel.UpdatedDateTime : 'mm/dd/yyyy'
+                    }}
+                  </span>
+                </small>
+              </div>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="activities-tab"
+      [hidden]="isActivityTabHidden">
+      <div class="card card-default">
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td>
+                <div class="input-group">
+                  <!-- <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <b>
+                        <i class="fa fa-table"></i>
+                      </b>
+                    </div>
+                  </div>
+                  <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false"
+                    [isRequired]="true" [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+                    (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+                    style="width: 140px;">
+                  </wj-combo-box> -->
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-primary" (click)="btnAddActivityClick(activityModalTemplate)"
+                  style="margin-right: 5px;" id="btnAddActivity">
+                  <i class="fa fa-plus fa-fw"></i> Add
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/sales" id="btnCloseActivity">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card-body">
+          <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+          </mat-progress-bar>
+          <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityCollectionView" [selectionMode]="3"
+            [frozenColumns]="2">
+            <wj-flex-grid-filter></wj-flex-grid-filter>
+            <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-primary btn-block btn-xs"
+                  (click)="btnEditActivityClick(activityModalTemplate)" id="btnEditActivity">
+                  <i class="fa fa-edit fa-fw"></i> {{ documentEditButtonLabel }}
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-danger btn-block btn-xs"
+                  (click)="btnDeleteActivityClick(activityDeleteModalTemplate)" id="btnDeleteActivity">
+                  <i class="fa fa-trash fa-fw"></i> Delete
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="110">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Date'" [binding]="'ACDate'" [isReadOnly]="true" [width]="110">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Functional'" [binding]="'FunctionalUser'" [isReadOnly]="true"
+              [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Technical'" [binding]="'TechnicalUser'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'SD Status'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'3*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'StartDate'" [binding]="'StartDate'" [isReadOnly]="true" [width]="'1*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'EndDate'" [binding]="'EndDate'" [isReadOnly]="true" [width]="'1*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+          </wj-flex-grid>
+        </div>
+        <div class="card-footer">
+          <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listActivityCollectionView.pageIndex + 1 }} / {{ listActivityCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+          <div class="col-sm-8"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab" [hidden]="false">
+      <div class="card card-default">
+        <div class="card-header">
+          <table border="0" style="width: 100%; border: none;">
+            <tr>
+              <td>
+                <div class="input-group">
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-primary" (click)="btnAddDocument()" *ngIf="isDocumentEditAuthorized"
+                  style="margin-right: 5px;" id="btnAddDocument">
+                  <i class="fa fa-plus fa-fw"></i> Add
+                </button>
+                <button class="btn btn-danger" routerLink="/software/trn/sales" id="btnCloseActivity">
+                  <i class="fa fa-close fa-fw"></i> Close
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body">
+          <mat-progress-bar [hidden]="isDocumentProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+          </mat-progress-bar>
+          <wj-flex-grid #listDocumentFlexGrid [itemsSource]="listDocumentCollectionView" [selectionMode]="3"
+            [frozenColumns]="2">
+            <wj-flex-grid-filter></wj-flex-grid-filter>
+            <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-primary btn-block btn-xs" id="btnEditDocument"
+                  (click)="btnEditDocument()"><i class="fa fa-edit fa-fw" *ngIf="isDocumentEditAuthorized"></i> 
+                  <i class="fa fa-file fa-fw" *ngIf="!isDocumentEditAuthorized"></i> {{ documentEditButtonLabel }}
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90" *ngIf="isDocumentEditAuthorized">
+              <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                <button type="button" class="btn btn-danger btn-block btn-xs" id="btnDeleteActivity" (click)="btnDeleteDocument()">
+                  <i class="fa fa-trash fa-fw"></i> Delete
+                </button>
+              </ng-template>
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Document'" [binding]="'DocumentName'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'URL'" [binding]="'DocumentURL'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'DocumentGroup'" [binding]="'DocumentGroup'" [isReadOnly]="true"
+              [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Date Uploaded'" [binding]="'DateUploaded'" [isReadOnly]="true"
+              [width]="'2*'">
+            </wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Particulars'" [binding]="'Particulars'" [isReadOnly]="true" [width]="'2*'">
+            </wj-flex-grid-column>
+          </wj-flex-grid>
+        </div>
+        <div class="card-footer">
+          <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listDocumentCollectionView.pageIndex + 1 }} / {{ listDocumentCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listDocumentCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+          <div class="col-sm-8"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #customerModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ customerModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listCustomerFlexGrid [itemsSource]="listCustomerCollectionView" [selectionMode]="3"
+      [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column *ngIf="false" [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Code'" [binding]="'ArticleCode'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Customer'" [binding]="'Article'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Contact Person'" [binding]="'ContactPerson'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="Pick" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnPickCustomerClick()"
+            id="btnPickCustomer">
+            <i class="fa fa-edit fa-fw"></i> Pick
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+  <!-- <div class="modal-footer"> -->
+  <div class="card-footer">
+    <table>
+      <tr>
+        <td>
+          <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listCustomerCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listCustomerCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listCustomerCollectionView.pageIndex + 1 }} / {{ listCustomerCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listCustomerCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listCustomerCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+        </td>
+        <td style="padding-left: 147%;">
+          <button type="button" class="btn btn-danger float-right" (click)="customerModalRef.hide()"
+            id="btnCustomerClickCloseModal" style="width: 90px;">
+            <i class="fa fa-close"></i> Cancel
+          </button>
+        </td>
+      </tr>
+    </table>
+    <!-- </div> -->
+  </div>
+</ng-template>
+
+<ng-template #leadModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ leadModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listLeadFlexGrid [itemsSource]="listLeadCollectionView" [selectionMode]="3" [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column *ngIf="false" [header]="'Id'" [binding]="'Id'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LDNumber'" [binding]="'LDNumber'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'LDDate'" [binding]="'LDDate'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Name'" [binding]="'Name'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'ContactPerson'" [binding]="'ContactPerson'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Remarks'" [binding]="'Remarks'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="Pick" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs" (click)="btnPickLeadClick()" id="btnPickLead">
+            <i class="fa fa-edit fa-fw"></i> Pick
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+  <div class="card-footer">
+    <table>
+      <tr>
+        <td>
+          <div class="col-sm-12 btn-group" style="padding: 5px 0px 5px 0px;">
+            <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToFirstPage()">
+              <i class="fa fa-fast-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToPreviousPage()">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" disabled style="width:100px">
+              {{ listLeadCollectionView.pageIndex + 1 }} / {{ listLeadCollectionView.pageCount }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToNextPage()">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="listLeadCollectionView.moveToLastPage()">
+              <i class="fa fa-fast-forward"></i>
+            </button>
+          </div>
+        </td>
+        <td style="padding-left: 147%;">
+          <button type="button" class="btn btn-danger float-right" (click)="leadModalRef.hide()"
+            id="btnLeadClickCloseModal">
+            <i class="fa fa-close"></i> Cancel
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #activityModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ activityModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div [hidden]="isActivityLoadingSpinnerHidden">
+      <br /><br />
+      <mat-spinner style="margin: auto;"></mat-spinner>
+      <br /><br />
+    </div>
+
+    <div [hidden]="isActivityContentHidden">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">SD No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="SD No..."
+                [(ngModel)]="salesDetailActivityModel.SDNumber" disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">SD Date</label>
+            <div class="col-sm-8">
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="salesDetailActivityModel.SDDate"
+                disabled style="width: 100%; padding: 3px;">
+              </wj-input-date>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">SD Name</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="CRM Status..."
+                [(ngModel)]="salesDetailActivityModel.SDName" disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">SD Status</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="SD Status..."
+                [(ngModel)]="salesDetailActivityModel.CRMStatus" disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Functional</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityFunctionalUser [(ngModel)]="salesDetailActivityModel.FunctionalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Technical</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityTechnicalUser [(ngModel)]="salesDetailActivityModel.TechnicalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Start</label>
+            <div class="col-sm-8">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityStartDate [(ngModel)]="salesDetailActivityModel.StartDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityStartTime [(ngModel)]="salesDetailActivityModel.StartTime"
+                      format="h:mm tt" [step]="1"></wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">End</label>
+            <div class="col-sm-8">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityEndDate [(ngModel)]="salesDetailActivityModel.EndDate"
+                      format="MMMM dd, yyyy"></wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityEndTime [(ngModel)]="salesDetailActivityModel.EndTime" format="h:mm tt"
+                      [step]="1"></wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityStatus [(ngModel)]="salesDetailActivityModel.Status"
+                [itemsSource]="cboListActivityStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">Activity No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Number..."
+                [(ngModel)]="salesDetailActivityModel.ACNumber" disabled>
+            </div>
+            <br /><br />
+
+            <label for="" class="col-sm-4 col-form-label form-group-label">Activity</label>
+            <div class="col-sm-8">
+              <textarea [(ngModel)]="salesDetailActivityModel.Activity" type="text" class="form-control"
+                style="resize: vertical" placeholder="Activity..." rows="7"></textarea>
+            </div>
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Transportation
+              Fee</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="salesDetailActivityModel.TransportationCost"
+                (textChanged)="transportationCostTextChanged()" #numActivityTranspoCost
+                style="width: 100%; padding: 3px;"></wj-input-number>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="salesDetailActivityModel.OnSiteCost"
+                (textChanged)="transportationCostTextChanged()" #numActivityOnsiteCost
+                style="width: 100%; padding: 3px;"></wj-input-number>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost>
+              </wj-input-number>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
+      (click)="btnPrintSalesDeliveryActivity()" id="btnPrintctivity">
+      <i class="fa fa-save"></i> Print
+    </button>
+    <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
+      (click)="btnSaveActivityClick()" id="btnSaveActivity">
+      <i class="fa fa-save"></i> Save
+    </button>
+    <button type="button" class="btn btn-danger" (click)="activitiyModalRef.hide()" id="btnSaveActivityClickCloseModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #activityDeleteModalTemplate>
+  <div class="modal-header" style="background-color: white;">
+    <h4 class="modal-title" style="color: black">
+      Delete
+    </h4>
+  </div>
+  <div class="modal-body">
+    Do you want to delete activity {{
+      listActivityCollectionView.items.length > 0 ?
+      listActivityCollectionView.currentItem.ACNumber : 'NA'
+      }}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteAcitivityClick()"
+      id="btnConfirmDeleteAcitivity">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+    <button type="button" class="btn btn-light" (click)="deleteActivitiyModalRef.hide()"
+      id="btnCloseConfirmDeleteAcitivityModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>

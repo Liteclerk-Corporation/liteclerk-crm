@@ -1,0 +1,150 @@
+<div class="card card-default">
+
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnCSVReportClick()" style="margin-right: 5px;" id="btnPrint">
+            <i class="fa fa-file-excel-o fa-fw"></i> CSV
+          </button>
+          <button class="btn btn-danger" routerLink="/software" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboActivityStartDateFilter [(ngModel)]="ActivityStartDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboActivityEndDateFilter [(ngModel)]="ActivityEndDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Document</span>
+                <wj-combo-box #cboActivityDocument [itemsSource]="cboActivityDocumentObservableArray"
+                  [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Category'"
+                  [selectedValuePath]="'Category'"
+                  (selectedIndexChanged)="cboDocumentSelectedIndexChanged(cboActivityDocument.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Status</span>
+                <wj-combo-box #cboActivityStatus [itemsSource]="cboActivityStatusObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  (selectedIndexChanged)="cboActivityStatusSelectedIndexChanged(cboActivityStatus.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityCollectionView" [selectionMode]="3"
+      [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column [header]="'Document'" [binding]="'Document'" [isReadOnly]="true" [width]="110">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'ACNumber'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="110">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'ACDate'" [binding]="'ACDate'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'User'" [binding]="'User'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Functional'" [binding]="'Functional'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Technical'" [binding]="'Technical'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'CRMStatus'" [binding]="'CRMStatus'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'StartDateTime'" [binding]="'StartDateTime'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'EndDateTime'" [binding]="'EndDateTime'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'TransportationCost'" [binding]="'TransportationCost'" [isReadOnly]="true"
+        [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'OnSiteCost'" [binding]="'OnSiteCost'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'L'" [binding]="'IsLocked'" [isReadOnly]="true" [width]="30">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created By'" [binding]="'CreatedByUser'" [isReadOnly]="true" [width]="200">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Created Date'" [binding]="'CreatedDateTime'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'UpdatedByUser'" [binding]="'UpdatedByUser'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Updated Date'" [binding]="'UpdatedDateTime'" [isReadOnly]="true" [width]="150">
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+
+  <div class="card-footer">
+    <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listActivityCollectionView.pageIndex + 1 }} / {{ listActivityCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+    <div class="com-sm-8"></div>
+  </div>
+</div>

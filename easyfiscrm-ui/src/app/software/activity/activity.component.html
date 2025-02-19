@@ -1,0 +1,543 @@
+<div class="card card-default">
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-danger" routerLink="/software" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-10">
+        <table border="0" style="width: 100%; border: none; margin-top: -15px;">
+          <tr>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  Start Date</span>
+                <wj-input-date #cboActivityStartDateFilter [(ngModel)]="ActivityStartDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboStartDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-calendar fa-fw"></i>
+                  End Date</span>
+                <wj-input-date #cboActivityEndDateFilter [(ngModel)]="ActivityEndDateFilterData"
+                  [ngModelOptions]="{standalone: true}" (textChanged)="cboEndDateTextChanged()" format="MMMM dd, yyyy"
+                  style="width: 100%;">
+                </wj-input-date>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Document</span>
+                <wj-combo-box #cboActivityDocument [itemsSource]="cboActivityDocumentObservableArray"
+                  [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Category'"
+                  [selectedValuePath]="'Category'"
+                  (selectedIndexChanged)="cboDocumentSelectedIndexChanged(cboActivityDocument.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Status</span>
+                <wj-combo-box #cboActivityStatus [itemsSource]="cboActivityStatusObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'Status'" [selectedValuePath]="'Status'"
+                  (selectedIndexChanged)="cboActivityStatusSelectedIndexChanged(cboActivityStatus.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                  Functional</span>
+                <wj-combo-box #cboActivityUser [itemsSource]="cboActivityFunctionalObservableArray" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'"
+                  (selectedIndexChanged)="cboActivityUserSelectedIndexChanged(cboActivityUser.selectedValue)"
+                  style="width: 100%;">
+                </wj-combo-box>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                </span><br>
+                <button class="btn btn-primary" (click)="btnGetActivityClick()" style="margin-right: 5px;"
+                  id="btnPrint">
+                  Get
+                </button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listActivityFlexGrid [itemsSource]="listActivityHeaderCollectionView" [selectionMode]="3"
+      [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs"
+            (click)="btnEditActivityListClick(activityListModalTemplate)" id="btnActivity">
+            Edit
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Activity No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'ACDate'" [binding]="'ACDate'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'DocumentNumber'" [binding]="'DocumentNumber'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Customer'" [binding]="'Customer'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Product'" [binding]="'Product'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'StartDate'" [binding]="'StartDate'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'EndDate'" [binding]="'EndDate'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Functional Staff'" [binding]="'FunctionalStaff'" [isReadOnly]="true"
+        [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Technical Staff'" [binding]="'TechnicalStaff'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Total Amount'" [binding]="'TotalAmount'" [isReadOnly]="true" [width]="'1*'">
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+  <div class="card-footer">
+    <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listActivityHeaderCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityHeaderCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listActivityHeaderCollectionView.pageIndex + 1 }} / {{ listActivityHeaderCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityHeaderCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listActivityHeaderCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+    <div class="col-sm-8"></div>
+  </div>
+</div>
+
+<div class="card card-default" style="margin-top: 10px;">
+  <div class="card-header">
+    User stamp
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <p>Created by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="createdBy">
+            {{
+            listActivityHeaderCollectionView.items.length > 0 ?
+            listActivityHeaderCollectionView.currentItem.CreatedByUser : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="createdDate">
+              {{
+              listActivityHeaderCollectionView.items.length > 0 ?
+              listActivityHeaderCollectionView.currentItem.CreatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+      <div class="col-md-6">
+        <p>Updated by:</p>
+        <div style="padding-left: 10px;">
+          <i class="fa fa-key"></i>&nbsp;
+          <label id="updatedBy">
+            {{
+            listActivityHeaderCollectionView.items.length > 0 ?
+            listActivityHeaderCollectionView.currentItem.UpdatedByUser : 'NA'
+            }}
+          </label>
+          <br />
+          <small>
+            <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+            <span id="updatedDate">
+              {{
+              listActivityHeaderCollectionView.items.length > 0 ?
+              listActivityHeaderCollectionView.currentItem.UpdatedDateTime : 'mm/dd/yyyy'
+              }}
+            </span>
+          </small>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #activityListModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ activityModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="card card-default">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label form-group-label">Document</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Document..." [disabled]="isLocked"
+                  [readonly]="true" [(ngModel)]="activityHeaderModel.docType">
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Document No.</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Document No..."
+                  [readonly]="true" [(ngModel)]="activityHeaderModel.reference">
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Assigned To</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" style="resize: none" [disabled]="isLocked"
+                  placeholder="Sales Assigned To..." [readonly]="true" [(ngModel)]="activityHeaderModel.assignedTo">
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Created By</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Created By..."
+                  [readonly]="true" [(ngModel)]="activityHeaderModel.createdBy">
+              </div>
+              <br /><br />
+              <label for="" *ngIf="activityHeaderModel.Document != 'LEAD'"
+                class="col-sm-4 col-form-label form-group-label">Product</label>
+              <div class="col-sm-8" *ngIf="activityHeaderModel.Document != 'LEAD'">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Product..." [readonly]="true"
+                  [(ngModel)]="activityHeaderModel.product">
+              </div>
+              <br /><br />
+              <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" [disabled]="isLocked" placeholder="Status..." [readonly]="true"
+                  [(ngModel)]="activityHeaderModel.status">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label form-group-label">Particulars / Remarks / Issues</label>
+              <br /><br />
+              <div class="col-sm-8">
+                <textarea type="text" class="form-control" style="resize: none" [disabled]="isLocked"
+                  placeholder="Particulars / Remarks / Issues..." rows="11" [readonly]="true"
+                  [(ngModel)]="activityHeaderModel.particular">
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table border="0" style="width: 100%; border: none;">
+          <tr>
+            <td>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <b>
+                      <i class="fa fa-table"></i>
+                    </b>
+                  </div>
+                </div>
+                <wj-combo-box #cboNumberOfRows [itemsSource]="modalcboShowNumberOfRows" [isEditable]="false"
+                  [isRequired]="true" [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+                  (selectedIndexChanged)="modalCboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+                  style="width: 140px;">
+                </wj-combo-box>
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary" (click)="btnAddActivityClick(activityModalTemplate)"
+                style="margin-right: 5px;" id="btnAddActivity">
+                <i class="fa fa-plus fa-fw"></i> Add
+              </button>
+              <button class="btn btn-danger" (click)="btnCloseActivity()" id="btnCloseActivity">
+                <i class="fa fa-close fa-fw"></i> Close
+              </button>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+        </mat-progress-bar>
+        <wj-flex-grid #listActivityFlexGrid [itemsSource]="modalListActivityCollectionView" [selectionMode]="3"
+          [frozenColumns]="2">
+          <wj-flex-grid-filter></wj-flex-grid-filter>
+          <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+              <button type="button" class="btn btn-primary btn-block btn-xs"
+                (click)="btnEditActivityClick(activityModalTemplate)" id="btnEditActivity">
+                <i class="fa fa-edit fa-fw"></i> Edit
+              </button>
+            </ng-template>
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+              <button type="button" class="btn btn-danger btn-block btn-xs"
+                (click)="btnDeleteActivityClick(activityDeleteModalTemplate)" id="btnDeleteActivity">
+                <i class="fa fa-trash fa-fw"></i> Delete
+              </button>
+            </ng-template>
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'No.'" [binding]="'ACNumber'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Date'" [binding]="'ACDate'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Activity'" [binding]="'Activity'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'StartDate'" [binding]="'StartDate'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'EndDate'" [binding]="'EndDate'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Functional'" [binding]="'FunctionalUser'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'TechnicalUser'" [binding]="'TechnicalUser'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+          <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'1*'">
+          </wj-flex-grid-column>
+        </wj-flex-grid>
+      </div>
+      <div class="card-footer">
+        <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+          <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToFirstPage()">
+            <i class="fa fa-fast-backward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary"
+            (click)="modalListActivityCollectionView.moveToPreviousPage()">
+            <i class="fa fa-step-backward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" disabled style="width:100px">
+            {{ modalListActivityCollectionView.pageIndex + 1 }} / {{ modalListActivityCollectionView.pageCount }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToNextPage()">
+            <i class="fa fa-step-forward"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="modalListActivityCollectionView.moveToLastPage()">
+            <i class="fa fa-fast-forward"></i>
+          </button>
+        </div>
+        <div class="col-sm-8"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
+
+<ng-template #activityModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ activityModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div [hidden]="isActivityLoadingSpinnerHidden">
+      <br /><br />
+      <mat-spinner style="margin: auto;"></mat-spinner>
+      <br /><br />
+    </div>
+    <div [hidden]="isActivityContentHidden">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">Document No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="User..." [(ngModel)]="activityModel.DocNumber"
+                disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">CRM</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="CRM Status..." [(ngModel)]="activityModel.CRMStatus"
+                disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Date</label>
+            <div class="col-sm-8">
+              <wj-input-date #cboActivityDate format="MMMM dd, yyyy" [(ngModel)]="activityModel.ACDate" disabled
+                style="width: 100%; padding: 3px;">
+              </wj-input-date>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Functional</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityFunctionalUser [(ngModel)]="activityModel.FunctionalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Technical</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityTechnicalUser [(ngModel)]="activityModel.TechnicalUserId"
+                [itemsSource]="cboListActivityUsersObservableArray" [isEditable]="false" [isRequired]="false"
+                [displayMemberPath]="'FullName'" [selectedValuePath]="'Id'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Start</label>
+            <div class="col-sm-8">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityStartDate [(ngModel)]="activityModel.StartDate" format="MMMM dd, yyyy">
+                    </wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityStartTime [(ngModel)]="activityModel.StartTime" format="h:mm tt"
+                      [step]="1"></wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">End</label>
+            <div class="col-sm-8">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 60%">
+                    <wj-input-date #cboActivityEndDate [(ngModel)]="activityModel.EndDate" format="MMMM dd, yyyy">
+                    </wj-input-date>
+                  </td>
+                  <td style="width: 1%"></td>
+                  <td style="width: 39%">
+                    <wj-input-time #cboActivityEndTime [(ngModel)]="activityModel.EndTime" format="h:mm tt" [step]="1">
+                    </wj-input-time>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Status</label>
+            <div class="col-sm-8">
+              <wj-combo-box #cboActivityStatus [(ngModel)]="activityModel.Status"
+                [itemsSource]="cboListActivityStatusObservableArray" [isEditable]="false" [isRequired]="true"
+                [displayMemberPath]="'Status'" [selectedValuePath]="'Status'" style="width: 100%; padding: 3px;">
+              </wj-combo-box>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label form-group-label">Activity No.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Number..." [(ngModel)]="activityModel.ACNumber"
+                disabled>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Activity</label>
+            <div class="col-sm-8">
+              <textarea [(ngModel)]="activityModel.Activity" type="text" class="form-control" style="resize: vertical"
+                placeholder="Activity..." rows="7"></textarea>
+            </div>
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Transportation
+              Fee</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="activityModel.TransportationCost" #numActivityTranspoCost
+                style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">On-Site Fee</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="activityModel.OnSiteCost" #numActivityOnsiteCost
+                style="width: 100%; padding: 3px;" (textChanged)="transportationCostTextChanged()"></wj-input-number>
+            </div>
+            <br /><br />
+            <label for="" class="col-sm-4 col-form-label form-group-label">Total</label>
+            <div class="col-sm-8">
+              <wj-input-number [(ngModel)]="totalCost" disabled style="width: 100%; padding: 3px;" #numTotalCost>
+              </wj-input-number>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button [hidden]="isActivityContentHidden" type="button" class="btn btn-primary" style="margin-right: 5px;"
+      (click)="btnSaveActivityClick()" id="btnSaveActivity">
+      <i class="fa fa-save"></i> Save
+    </button>
+    <button type="button" class="btn btn-danger" (click)="activitiyModalRef.hide()" id="btnSaveActivityClickCloseModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #activityDeleteModalTemplate>
+  <div class="modal-header" style="background-color: white;">
+    <h4 class="modal-title" style="color: black">
+      Delete
+    </h4>
+  </div>
+  <div class="modal-body">
+    Do you want to delete activity {{
+      modalListActivityCollectionView.items.length > 0 ?
+      modalListActivityCollectionView.currentItem.ACNumber : 'NA'
+    }}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteAcitivityClick()"
+      id="btnConfirmDeleteAcitivity">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+    <button type="button" class="btn btn-light" (click)="deleteActivitiyModalRef.hide()" id="btnCloseConfirmDeleteAcitivityModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,385 @@
+<div class="card card-default">
+
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listUserFlexGrid [itemsSource]="listUserCollectionView" [selectionMode]="3" [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs"
+            (click)="btnEditUserClick(userDetailModalTemplate)" id="btnEditUser">
+            <i class="fa fa-edit fa-fw"></i> Edit
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'UserName'" [binding]="'UserName'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'FullName'" [binding]="'FullName'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'User Group'" [binding]="'CRMUserGroup'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+
+  <div class="card-footer">
+    <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listUserCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listUserCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listUserCollectionView.pageIndex + 1 }} / {{ listUserCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listUserCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listUserCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+    <div class="col-sm-8"></div>
+  </div>
+</div>
+
+<ng-template #userDetailModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ userDetailModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <!-- <div [hidden]="isLoadingSpinnerHidden">
+      <br /><br /><br />
+      <mat-spinner style="margin: auto;"></mat-spinner>
+    </div> -->
+
+    <div [hidden]="isContentHidden">
+      <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px; margin-bottom: 10px;">
+        <li class="nav-item">
+          <a class="nav-link active" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user"
+            aria-selected="true">User</a>
+        </li>
+        <!-- <li class="nav-item" [hidden]="isUserFormTabHidden">
+          <a class="nav-link" id="user-form-tab" data-toggle="tab" href="#userForm" role="tab" aria-controls="userForm"
+            aria-selected="false" (click)="listUserForm()">User Form</a>
+        </li> -->
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="user-tab">
+          <div class="card card-default">
+
+            <div class="card-header">
+              <table border="0" style="width: 100%; border: none;">
+                <tr>
+                  <td style="text-align: right;">
+                    <button class="btn btn-primary" (click)="btnSaveUserClick()" style="margin-right: 5px;"
+                      id="btnUpdateUser">
+                      <i class="fa fa-save fa-fw"></i> Save
+                    </button>
+                    <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseLead">
+                      <i class="fa fa-close fa-fw"></i> Close
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label form-group-label">Username</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" disabled [(ngModel)]="userModel.UserName"
+                        placeholder="Username...">
+                    </div>
+                    <br /><br />
+                    <label for="" class="col-sm-4 col-form-label form-group-label">Full name</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" disabled [(ngModel)]="userModel.FullName"
+                        placeholder="Full name...">
+                    </div>
+                    <br /><br />
+                    <label for="" class="col-sm-4 col-form-label form-group-label">Group</label>
+                    <div class="col-sm-8">
+                      <wj-combo-box #cboGroup [(ngModel)]="cboGroupSelectedValue" [itemsSource]="cboGroupObservable"
+                        [isEditable]="false" [isRequired]="true" [displayMemberPath]="'Group'"
+                        [selectedValuePath]="'Group'"
+                        (selectedIndexChanged)="cboGroupSelectedIndexChanged(cboGroup.selectedValue)"
+                        style="width: 100%;">
+                      </wj-combo-box>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="userForm" role="tabpanel" aria-labelledby="user-form-tab"
+          [hidden]="isUserFormTabHidden">
+          <div class="card card-default">
+            <div class="card-header">
+              <table border="0" style="width: 100%; border: none;">
+                <tr>
+                  <td>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <b>
+                            <i class="fa fa-table"></i>
+                          </b>
+                        </div>
+                      </div>
+                      <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false"
+                        [isRequired]="true" [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+                        (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+                        style="width: 140px;">
+                      </wj-combo-box>
+                    </div>
+                  </td>
+                  <td style="text-align: right;">
+                    <button class="btn btn-primary" (click)="btnAddUserFormClick(userFormModalTemplate)"
+                      style="margin-right: 5px;" id="btnAddUserForm">
+                      <i class="fa fa-plus fa-fw"></i> Add
+                    </button>
+                    <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseUserForm">
+                      <i class="fa fa-close fa-fw"></i> Close
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body">
+              <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'">
+              </mat-progress-bar>
+              <wj-flex-grid #listUserFormFlexGrid [itemsSource]="listUserFormCollectionView" [selectionMode]="3"
+                [frozenColumns]="2">
+                <wj-flex-grid-filter></wj-flex-grid-filter>
+                <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+                  <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                    <button type="button" class="btn btn-primary btn-block btn-xs"
+                      (click)="btnEditUserFormClick(userFormModalTemplate)" id="btnEditActivity">
+                      <i class="fa fa-edit fa-fw"></i> Edit
+                    </button>
+                  </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+                  <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+                    <button type="button" class="btn btn-danger btn-block btn-xs"
+                      (click)="btnDelteUserFormClick(userFormDeleteModalTemplate)" id="btnDeleteUserForm">
+                      <i class="fa fa-trash fa-fw"></i> Delete
+                    </button>
+                  </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Form'" [binding]="'Form'" [isReadOnly]="true" [width]="'2*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Add'" [binding]="'CanAdd'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Edit'" [binding]="'CanEdit'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Delete'" [binding]="'CanDelete'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'CanLock'" [binding]="'CanLock'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Unlock'" [binding]="'CanUnlock'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'CanCancel'" [binding]="'CanCancel'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Print'" [binding]="'CanPrint'" [isReadOnly]="true" [width]="'1*'">
+                </wj-flex-grid-column>
+              </wj-flex-grid>
+            </div>
+            <div class="card-footer">
+              <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+                <button type="button" class="btn btn-secondary" (click)="listUserFormCollectionView.moveToFirstPage()">
+                  <i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="listUserFormCollectionView.moveToPreviousPage()">
+                  <i class="fa fa-step-backward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" disabled style="width:100px">
+                  {{ listUserFormCollectionView.pageIndex + 1 }} / {{ listUserFormCollectionView.pageCount }}
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="listUserFormCollectionView.moveToNextPage()">
+                  <i class="fa fa-step-forward"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="listUserFormCollectionView.moveToLastPage()">
+                  <i class="fa fa-fast-forward"></i>
+                </button>
+              </div>
+              <div class="col-sm-8"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+  </div>
+</ng-template>
+
+<ng-template #userFormModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ userFormDetailModalHeaderTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="card card-default">
+      <div class="card-header">
+
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <span class="badge badge-info" style="margin-bottom: 5px;"><i class="fa fa-question-circle fa-fw"></i>
+                System Form</span>
+              <wj-combo-box #cboSysForm [itemsSource]="cboSysFormObservable" [isEditable]="false" [isRequired]="true"
+                [(ngModel)]="userFormModel.FormId" [displayMemberPath]="'FormName'" [selectedValuePath]="'Id'"
+                (selectedIndexChanged)="cboSysFormSelectedIndexChanged(cboSysForm.selectedValue)" style="width: 100%;">
+              </wj-combo-box>
+            </div>
+            <table>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanAdd"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanAdd</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanEdit"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanEdit</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanDelete"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanDelete</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanLock"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanLock</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanUnlock"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanUnlock</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanCancel"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanCancel</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" [(ngModel)]="userFormModel.CanPrint"
+                    aria-label="Checkbox for following text input">
+                </td>
+                <td>
+                  <label for="" class="col-form-label form-group-label">CanPrint</label>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnSaveUserFormClick()" style="margin-right: 5px;"
+            id="btnAddActivity">
+            <i class="fa fa-plus fa-fw"></i> Save
+          </button>
+          <button class="btn btn-danger" (click)="btnCloseUserFormModal()" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Cancel
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #userFormDeleteModalTemplate>
+  <div class="modal-header" style="background-color: white;">
+    <h4 class="modal-title" style="color: black;">
+      Delete
+    </h4>
+  </div>
+  <div class="modal-body">
+    Do you want to delete form {{
+      listUserFormCollectionView.items.length > 0 ?
+      listUserFormCollectionView.currentItem.Form : 'NA'
+    }}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteUserFormClick()"
+      id="btnConfirmDeleteAcitivity">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+    <button type="button" class="btn btn-light" (click)="userFormDeleteModalRef.hide()"
+      id="btnCloseConfirmDeleteAcitivityModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>

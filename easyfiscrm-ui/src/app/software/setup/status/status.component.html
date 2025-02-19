@@ -1,0 +1,159 @@
+<div class="card card-default">
+  <div class="card-header">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <b>
+                  <i class="fa fa-table"></i>
+                </b>
+              </div>
+            </div>
+            <wj-combo-box #cboNumberOfRows [itemsSource]="cboShowNumberOfRows" [isEditable]="false" [isRequired]="true"
+              [displayMemberPath]="'rowString'" [selectedValuePath]="'rowNumber'"
+              (selectedIndexChanged)="cboShowNumberOfRowsOnSelectedIndexChanged(cboNumberOfRows.selectedValue)"
+              style="width: 140px;">
+            </wj-combo-box>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnAddStatusClick(statusDetailModalTemplate)"
+            style="margin-right: 5px;" id="btnAddSupport">
+            <i class="fa fa-plus fa-fw"></i> Add
+          </button>
+          <button class="btn btn-danger" routerLink="/software/sys/dashboard" id="btnCloseActivity">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <mat-progress-bar [hidden]="isProgressBarHidden" [color]="'primary'" [mode]="'indeterminate'"></mat-progress-bar>
+    <wj-flex-grid #listStatusFlexGrid [itemsSource]="listStatusCollectionView" [selectionMode]="3" [frozenColumns]="2">
+      <wj-flex-grid-filter></wj-flex-grid-filter>
+      <wj-flex-grid-column [header]="Edit" [isReadOnly]="true" [width]="80">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-primary btn-block btn-xs"
+            (click)="btnEditStatusClick(statusDetailModalTemplate)" id="btnEditUser">
+            <i class="fa fa-edit fa-fw"></i> Edit
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="Delete" [isReadOnly]="true" [width]="90">
+        <ng-template wjFlexGridCellTemplate [cellType]="'Cell'">
+          <button type="button" class="btn btn-danger btn-block btn-xs"
+            (click)="btnDeleteProductClick(statusDeleteModalTemplate)" id="btnDeleteSupport">
+            <i class="fa fa-trash fa-fw"></i> Delete
+          </button>
+        </ng-template>
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Status'" [binding]="'Status'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+      <wj-flex-grid-column [header]="'Category'" [binding]="'Category'" [isReadOnly]="true" [width]="'2*'">
+      </wj-flex-grid-column>
+    </wj-flex-grid>
+  </div>
+
+  <div class="card-footer">
+    <div class="col-sm-4 btn-group" style="padding: 5px 0px 5px 0px;">
+      <button type="button" class="btn btn-secondary" (click)="listStatusCollectionView.moveToFirstPage()">
+        <i class="fa fa-fast-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listStatusCollectionView.moveToPreviousPage()">
+        <i class="fa fa-step-backward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" disabled style="width:100px">
+        {{ listStatusCollectionView.pageIndex + 1 }} / {{ listStatusCollectionView.pageCount }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listStatusCollectionView.moveToNextPage()">
+        <i class="fa fa-step-forward"></i>
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="listStatusCollectionView.moveToLastPage()">
+        <i class="fa fa-fast-forward"></i>
+      </button>
+    </div>
+    <div class="col-sm-8"></div>
+  </div>
+</div>
+
+
+<ng-template #statusDetailModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ statusModalTitle }}
+    </h4>
+  </div>
+  <div class="modal-body">
+    <!-- <div [hidden]="isLoadingSpinnerHidden">
+      <br /><br /><br />
+      <mat-spinner style="margin: auto;"></mat-spinner>
+    </div> -->
+    <div [hidden]="isContentHidden">
+      <div class="card card-default">
+        <!-- <div class="card-header">
+        </div> -->
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group row">
+                <label for="" class="col-sm-3 col-form-label form-group-label">Status</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" [disabled]="isLocked" [(ngModel)]="statusModel.Status"
+                    placeholder="Status...">
+                </div>
+                <br /><br />
+                <label for="" class="col-sm-3 col-form-label form-group-label">Category</label>
+                <div class="col-sm-9">
+                  <wj-combo-box #cboCategory [itemsSource]="cboCategoryObservableArray" [isEditable]="false" [(ngModel)]="statusModel.Category"
+                    [isRequired]="true" [displayMemberPath]="'Name'" [selectedValuePath]="'Code'" style="width: 100%;">
+                  </wj-combo-box>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <table border="0" style="width: 100%; border: none;">
+      <tr>
+        <td style="text-align: right;">
+          <button class="btn btn-primary" (click)="btnSaveStatusClick()" style="margin-right: 5px;"
+            id="btnSaveLead">
+            <i class="fa fa-save fa-fw"></i> Save
+          </button>
+          <button class="btn btn-danger" (click)="btnCloseModal()" id="btnCloseLead">
+            <i class="fa fa-close fa-fw"></i> Close
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #statusDeleteModalTemplate>
+  <div class="modal-header" style="background-color: white;">
+    <h4 class="modal-title" style="color: black;">
+      Delete
+    </h4>
+  </div>
+  <div class="modal-body">
+    Do you want to delete status {{
+      listStatusCollectionView.items.length > 0 ?
+      listStatusCollectionView.currentItem.Status : 'NA'
+    }}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="btnConfirmDeleteClick()"
+      id="btnConfirmDeleteStatus">
+      <i class="fa fa-trash"></i> Delete
+    </button>
+    <button type="button" class="btn btn-light" (click)="statusDeleteModalRef.hide()" id="btnCloseConfirmDeleteProductModal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+  </div>
+</ng-template>

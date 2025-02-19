@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="easyfis_easyfis" Class="easyfiscrmdbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=easyfis_easyfis;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
+    <Type Name="AspNetRole">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AspNetUserClaims" Member="AspNetUserClaims">
+    <Type Name="AspNetUserClaim">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="User_Id" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="ClaimType" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClaimValue" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Association Name="AspNetUser_AspNetUserClaim" Member="AspNetUser" ThisKey="User_Id" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AspNetUserLogins" Member="AspNetUserLogins">
+    <Type Name="AspNetUserLogin">
+      <Column Name="LoginProvider" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProviderKey" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="User_Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Association Name="AspNetUser_AspNetUserLogin" Member="AspNetUser" ThisKey="User_Id" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AspNetUserRoles" Member="AspNetUserRoles">
+    <Type Name="AspNetUserRole">
+      <Column Name="UserId" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetRole" ThisKey="RoleId" OtherKey="Id" Type="AspNetRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="AspNetUser_AspNetUserRole" Member="AspNetUser" ThisKey="UserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AspNetUsers" Member="AspNetUsers">
+    <Type Name="AspNetUser">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="EmailConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SecurityStamp" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PhoneNumberConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TwoFactorEnabled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LockoutEndDateUtc" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LockoutEnabled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AccessFailedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="AspNetUser_AspNetUserClaim" Member="AspNetUserClaims" ThisKey="Id" OtherKey="User_Id" Type="AspNetUserClaim" />
+      <Association Name="AspNetUser_AspNetUserLogin" Member="AspNetUserLogins" ThisKey="Id" OtherKey="User_Id" Type="AspNetUserLogin" />
+      <Association Name="AspNetUser_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="UserId" Type="AspNetUserRole" />
+      <Association Name="AspNetUser_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="UserId" Type="MstUser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmMstProduct" Member="CrmMstProducts">
+    <Type Name="CrmMstProduct">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmMstProduct_CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries" ThisKey="Id" OtherKey="ProductId" Type="CrmTrnSalesDelivery" />
+      <Association Name="CrmMstProduct_CrmTrnLead" Member="CrmTrnLeads" ThisKey="Id" OtherKey="ProductId" Type="CrmTrnLead" />
+      <Association Name="CrmMstProduct_CrmTrnSoftwareDevelopment" Member="CrmTrnSoftwareDevelopments" ThisKey="Id" OtherKey="ProductId" Type="CrmTrnSoftwareDevelopment" />
+      <Association Name="MstUser_CrmMstProduct" Member="MstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmMstProduct1" Member="MstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnActivity" Member="CrmTrnActivities">
+    <Type Name="CrmTrnActivity">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ACNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ACDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FunctionalUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TechnicalUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CRMStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Activity" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="StartDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TransportationCost" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="OnSiteCost" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="LDId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SDId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SPId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmTrnSalesDelivery_CrmTrnActivity" Member="CrmTrnSalesDelivery" ThisKey="SDId" OtherKey="Id" Type="CrmTrnSalesDelivery" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnActivity" Member="MstUser" ThisKey="UserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnActivity1" Member="MstUser1" ThisKey="FunctionalUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnActivity2" Member="MstUser2" ThisKey="TechnicalUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnActivity3" Member="MstUser3" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnActivity4" Member="MstUser4" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="CrmTrnSupport_CrmTrnActivity" Member="CrmTrnSupport" ThisKey="SPId" OtherKey="Id" Type="CrmTrnSupport" IsForeignKey="true" />
+      <Association Name="CrmTrnLead_CrmTrnActivity" Member="CrmTrnLead" ThisKey="LDId" OtherKey="Id" Type="CrmTrnLead" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries">
+    <Type Name="CrmTrnSalesDelivery">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SDNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SDDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RenewalDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SIId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LDId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContactPerson" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPosition" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactEmail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPhoneNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AssignedToUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmTrnSalesDelivery_CrmTrnActivity" Member="CrmTrnActivities" ThisKey="Id" OtherKey="SDId" Type="CrmTrnActivity" />
+      <Association Name="CrmTrnSalesDelivery_CrmTrnSupport" Member="CrmTrnSupports" ThisKey="Id" OtherKey="SDId" Type="CrmTrnSupport" />
+      <Association Name="CrmMstProduct_CrmTrnSalesDelivery" Member="CrmMstProduct" ThisKey="ProductId" OtherKey="Id" Type="CrmMstProduct" IsForeignKey="true" />
+      <Association Name="MstArticle_CrmTrnSalesDelivery" Member="MstArticle" ThisKey="CustomerId" OtherKey="Id" Type="MstArticle" IsForeignKey="true" />
+      <Association Name="TrnSalesInvoice_CrmTrnSalesDelivery" Member="TrnSalesInvoice" ThisKey="SIId" OtherKey="Id" Type="TrnSalesInvoice" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSalesDelivery" Member="MstUser" ThisKey="AssignedToUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSalesDelivery1" Member="MstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSalesDelivery2" Member="MstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="CrmTrnLead_CrmTrnSalesDelivery" Member="CrmTrnLead" ThisKey="LDId" OtherKey="Id" Type="CrmTrnLead" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstAccount" Member="MstAccounts">
+    <Type Name="MstAccount">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AccountCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Account" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AccountTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountCashFlowId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstAccount_MstAccount" Member="MstAccount2" ThisKey="Id" OtherKey="Id" Type="MstAccount" Cardinality="One" />
+      <Association Name="MstAccount_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="AccountId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticle1" Member="MstArticles1" ThisKey="Id" OtherKey="SalesAccountId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticle2" Member="MstArticles2" ThisKey="Id" OtherKey="CostAccountId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticle3" Member="MstArticles3" ThisKey="Id" OtherKey="AssetAccountId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticle4" Member="MstArticles4" ThisKey="Id" OtherKey="ExpenseAccountId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticleGroup" Member="MstArticleGroups" ThisKey="Id" OtherKey="AccountId" Type="MstArticleGroup" />
+      <Association Name="MstAccount_MstArticleGroup1" Member="MstArticleGroups1" ThisKey="Id" OtherKey="SalesAccountId" Type="MstArticleGroup" />
+      <Association Name="MstAccount_MstArticleGroup2" Member="MstArticleGroups2" ThisKey="Id" OtherKey="CostAccountId" Type="MstArticleGroup" />
+      <Association Name="MstAccount_MstArticleGroup3" Member="MstArticleGroups3" ThisKey="Id" OtherKey="AssetAccountId" Type="MstArticleGroup" />
+      <Association Name="MstAccount_MstArticleGroup4" Member="MstArticleGroups4" ThisKey="Id" OtherKey="ExpenseAccountId" Type="MstArticleGroup" />
+      <Association Name="MstAccount_MstTaxType" Member="MstTaxTypes" ThisKey="Id" OtherKey="AccountId" Type="MstTaxType" />
+      <Association Name="MstAccount_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="IncomeAccountId" Type="MstUser" />
+      <Association Name="MstAccount_MstUser1" Member="MstUsers1" ThisKey="Id" OtherKey="SupplierAdvancesAccountId" Type="MstUser" />
+      <Association Name="MstAccount_MstUser2" Member="MstUsers2" ThisKey="Id" OtherKey="CustomerAdvancesAccountId" Type="MstUser" />
+      <Association Name="MstAccount_MstUser3" Member="MstUsers3" ThisKey="Id" OtherKey="CustomerReturnAccountId" Type="MstUser" />
+      <Association Name="MstAccount_MstUser4" Member="MstUsers4" ThisKey="Id" OtherKey="SupplierReturnAccountId" Type="MstUser" />
+      <Association Name="MstAccount_MstAccount" Member="MstAccount1" ThisKey="Id" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstUser_MstAccount" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstAccount1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstArticle" Member="MstArticles">
+    <Type Name="MstArticle">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ManualArticleCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Article" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleGroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SalesAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CostAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AssetAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExpenseAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OutputTaxId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InputTaxId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WTaxTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Cost" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsInventory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsConsignment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ConsignmentCostPercentage" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="ConsignmentCostValue" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPerson" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="TaxNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CreditLimit" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="DateAcquired" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UsefulLife" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="SalvageValue" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="ManualArticleOldCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Kitting" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultSupplierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StockLevelQuantity" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="ReorderQuantity" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstArticle_CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries" ThisKey="Id" OtherKey="CustomerId" Type="CrmTrnSalesDelivery" />
+      <Association Name="MstArticle_TrnSalesInvoice" Member="TrnSalesInvoices" ThisKey="Id" OtherKey="CustomerId" Type="TrnSalesInvoice" />
+      <Association Name="MstArticle_CrmTrnSupport" Member="CrmTrnSupports" ThisKey="Id" OtherKey="CustomerId" Type="CrmTrnSupport" />
+      <Association Name="MstAccount_MstArticle" Member="MstAccount" ThisKey="AccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticle1" Member="MstAccount1" ThisKey="SalesAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticle2" Member="MstAccount2" ThisKey="CostAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticle3" Member="MstAccount3" ThisKey="AssetAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticle4" Member="MstAccount4" ThisKey="ExpenseAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstArticleType_MstArticle" Member="MstArticleType" ThisKey="ArticleTypeId" OtherKey="Id" Type="MstArticleType" IsForeignKey="true" />
+      <Association Name="MstTerm_MstArticle" Member="MstTerm" ThisKey="TermId" OtherKey="Id" Type="MstTerm" IsForeignKey="true" />
+      <Association Name="MstUnit_MstArticle" Member="MstUnit" ThisKey="UnitId" OtherKey="Id" Type="MstUnit" IsForeignKey="true" />
+      <Association Name="MstArticleGroup_MstArticle" Member="MstArticleGroup" ThisKey="ArticleGroupId" OtherKey="Id" Type="MstArticleGroup" IsForeignKey="true" />
+      <Association Name="MstTaxType_MstArticle" Member="MstTaxType" ThisKey="OutputTaxId" OtherKey="Id" Type="MstTaxType" IsForeignKey="true" />
+      <Association Name="MstTaxType_MstArticle1" Member="MstTaxType1" ThisKey="InputTaxId" OtherKey="Id" Type="MstTaxType" IsForeignKey="true" />
+      <Association Name="MstTaxType_MstArticle2" Member="MstTaxType2" ThisKey="WTaxTypeId" OtherKey="Id" Type="MstTaxType" IsForeignKey="true" />
+      <Association Name="MstUser_MstArticle" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstArticle1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstArticleType" Member="MstArticleTypes">
+    <Type Name="MstArticleType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstArticleType_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="ArticleTypeId" Type="MstArticle" />
+      <Association Name="MstArticleType_MstArticleGroup" Member="MstArticleGroups" ThisKey="Id" OtherKey="ArticleTypeId" Type="MstArticleGroup" />
+      <Association Name="MstUser_MstArticleType" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstArticleType1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstBranch" Member="MstBranches">
+    <Type Name="MstBranch">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BranchCode" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Branch" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxNumber" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstBranch_TrnSalesInvoice" Member="TrnSalesInvoices" ThisKey="Id" OtherKey="BranchId" Type="TrnSalesInvoice" />
+      <Association Name="MstBranch_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="BranchId" Type="MstUser" />
+      <Association Name="MstCompany_MstBranch" Member="MstCompany" ThisKey="CompanyId" OtherKey="Id" Type="MstCompany" IsForeignKey="true" />
+      <Association Name="MstUser_MstBranch" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstBranch1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstTerm" Member="MstTerms">
+    <Type Name="MstTerm">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Term" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NumberOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstTerm_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="TermId" Type="MstArticle" />
+      <Association Name="MstTerm_TrnSalesInvoice" Member="TrnSalesInvoices" ThisKey="Id" OtherKey="TermId" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_MstTerm" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstTerm1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstUnit" Member="MstUnits">
+    <Type Name="MstUnit">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstUnit_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="UnitId" Type="MstArticle" />
+      <Association Name="MstUser_MstUnit" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstUnit1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrnSalesInvoice" Member="TrnSalesInvoices">
+    <Type Name="TrnSalesInvoice">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BranchId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SINumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SIDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DocumentReference" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ManualSINumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="AdjustmentAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="SoldById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PreparedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CheckedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ApprovedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="IsCancelled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPrinted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="TrnSalesInvoice_CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries" ThisKey="Id" OtherKey="SIId" Type="CrmTrnSalesDelivery" />
+      <Association Name="MstArticle_TrnSalesInvoice" Member="MstArticle" ThisKey="CustomerId" OtherKey="Id" Type="MstArticle" IsForeignKey="true" />
+      <Association Name="MstBranch_TrnSalesInvoice" Member="MstBranch" ThisKey="BranchId" OtherKey="Id" Type="MstBranch" IsForeignKey="true" />
+      <Association Name="MstTerm_TrnSalesInvoice" Member="MstTerm" ThisKey="TermId" OtherKey="Id" Type="MstTerm" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice" Member="MstUser" ThisKey="ApprovedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice1" Member="MstUser1" ThisKey="CheckedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice2" Member="MstUser2" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice3" Member="MstUser3" ThisKey="PreparedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice4" Member="MstUser4" ThisKey="SoldById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_TrnSalesInvoice5" Member="MstUser5" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstArticleGroup" Member="MstArticleGroups">
+    <Type Name="MstArticleGroup">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleGroup" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SalesAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CostAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AssetAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExpenseAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstArticleGroup_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="ArticleGroupId" Type="MstArticle" />
+      <Association Name="MstAccount_MstArticleGroup" Member="MstAccount" ThisKey="AccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticleGroup1" Member="MstAccount1" ThisKey="SalesAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticleGroup2" Member="MstAccount2" ThisKey="CostAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticleGroup3" Member="MstAccount3" ThisKey="AssetAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstArticleGroup4" Member="MstAccount4" ThisKey="ExpenseAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstArticleType_MstArticleGroup" Member="MstArticleType" ThisKey="ArticleTypeId" OtherKey="Id" Type="MstArticleType" IsForeignKey="true" />
+      <Association Name="MstUser_MstArticleGroup" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstArticleGroup1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstStatus" Member="MstStatus">
+    <Type Name="MstStatus">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstUser_MstStatus" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstStatus1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstTaxType" Member="MstTaxTypes">
+    <Type Name="MstTaxType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TaxType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxRate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsInclusive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstTaxType_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="OutputTaxId" Type="MstArticle" />
+      <Association Name="MstTaxType_MstArticle1" Member="MstArticles1" ThisKey="Id" OtherKey="InputTaxId" Type="MstArticle" />
+      <Association Name="MstTaxType_MstArticle2" Member="MstArticles2" ThisKey="Id" OtherKey="WTaxTypeId" Type="MstArticle" />
+      <Association Name="MstAccount_MstTaxType" Member="MstAccount" ThisKey="AccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstUser_MstTaxType" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstTaxType1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstCompany" Member="MstCompanies">
+    <Type Name="MstCompany">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Company" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ClosingDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstCompany_MstBranch" Member="MstBranches" ThisKey="Id" OtherKey="CompanyId" Type="MstBranch" />
+      <Association Name="MstCompany_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="CompanyId" Type="MstUser" />
+      <Association Name="MstUser_MstCompany" Member="MstUser" ThisKey="CreatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_MstCompany1" Member="MstUser1" ThisKey="UpdatedById" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SysForm" Member="SysForms">
+    <Type Name="SysForm">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FormName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="SysForm_MstUserForm" Member="MstUserForms" ThisKey="Id" OtherKey="FormId" Type="MstUserForm" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstUserForm" Member="MstUserForms">
+    <Type Name="MstUserForm">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CanAdd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanUnlock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanCancel" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanPrint" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="SysForm_MstUserForm" Member="SysForm" ThisKey="FormId" OtherKey="Id" Type="SysForm" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="MstUser_MstUserForm" Member="MstUser" ThisKey="UserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstUser" Member="MstUsers">
+    <Type Name="MstUser">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BranchId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IncomeAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierAdvancesAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerAdvancesAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InventoryType" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultSalesInvoiceDiscountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SalesInvoiceName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SalesInvoiceCheckedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SalesInvoiceApprovedById" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OfficialReceiptName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="IsIncludeCostStockReports" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ActivateAuditTrail" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSIVATAnalysisIncluded" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSIDuplicateDocumentReferenceAllowed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerReturnAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SupplierReturnAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CRMUserGroup" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedById" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedById" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstUser_CrmMstProduct" Member="CrmMstProducts" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmMstProduct" />
+      <Association Name="MstUser_CrmMstProduct1" Member="CrmMstProducts1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmMstProduct" />
+      <Association Name="MstUser_CrmTrnActivity" Member="CrmTrnActivities" ThisKey="Id" OtherKey="UserId" Type="CrmTrnActivity" />
+      <Association Name="MstUser_CrmTrnActivity1" Member="CrmTrnActivities1" ThisKey="Id" OtherKey="FunctionalUserId" Type="CrmTrnActivity" />
+      <Association Name="MstUser_CrmTrnActivity2" Member="CrmTrnActivities2" ThisKey="Id" OtherKey="TechnicalUserId" Type="CrmTrnActivity" />
+      <Association Name="MstUser_CrmTrnActivity3" Member="CrmTrnActivities3" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmTrnActivity" />
+      <Association Name="MstUser_CrmTrnActivity4" Member="CrmTrnActivities4" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmTrnActivity" />
+      <Association Name="MstUser_CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries" ThisKey="Id" OtherKey="AssignedToUserId" Type="CrmTrnSalesDelivery" />
+      <Association Name="MstUser_CrmTrnSalesDelivery1" Member="CrmTrnSalesDeliveries1" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmTrnSalesDelivery" />
+      <Association Name="MstUser_CrmTrnSalesDelivery2" Member="CrmTrnSalesDeliveries2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmTrnSalesDelivery" />
+      <Association Name="MstUser_MstAccount" Member="MstAccounts" ThisKey="Id" OtherKey="CreatedById" Type="MstAccount" />
+      <Association Name="MstUser_MstAccount1" Member="MstAccounts1" ThisKey="Id" OtherKey="UpdatedById" Type="MstAccount" />
+      <Association Name="MstUser_MstArticle" Member="MstArticles" ThisKey="Id" OtherKey="CreatedById" Type="MstArticle" />
+      <Association Name="MstUser_MstArticle1" Member="MstArticles1" ThisKey="Id" OtherKey="UpdatedById" Type="MstArticle" />
+      <Association Name="MstUser_MstArticleType" Member="MstArticleTypes" ThisKey="Id" OtherKey="CreatedById" Type="MstArticleType" />
+      <Association Name="MstUser_MstArticleType1" Member="MstArticleTypes1" ThisKey="Id" OtherKey="UpdatedById" Type="MstArticleType" />
+      <Association Name="MstUser_MstBranch" Member="MstBranches" ThisKey="Id" OtherKey="CreatedById" Type="MstBranch" />
+      <Association Name="MstUser_MstBranch1" Member="MstBranches1" ThisKey="Id" OtherKey="UpdatedById" Type="MstBranch" />
+      <Association Name="MstUser_MstTerm" Member="MstTerms" ThisKey="Id" OtherKey="CreatedById" Type="MstTerm" />
+      <Association Name="MstUser_MstTerm1" Member="MstTerms1" ThisKey="Id" OtherKey="UpdatedById" Type="MstTerm" />
+      <Association Name="MstUser_MstUnit" Member="MstUnits" ThisKey="Id" OtherKey="CreatedById" Type="MstUnit" />
+      <Association Name="MstUser_MstUnit1" Member="MstUnits1" ThisKey="Id" OtherKey="UpdatedById" Type="MstUnit" />
+      <Association Name="MstUser_TrnSalesInvoice" Member="TrnSalesInvoices" ThisKey="Id" OtherKey="ApprovedById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_TrnSalesInvoice1" Member="TrnSalesInvoices1" ThisKey="Id" OtherKey="CheckedById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_TrnSalesInvoice2" Member="TrnSalesInvoices2" ThisKey="Id" OtherKey="CreatedById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_TrnSalesInvoice3" Member="TrnSalesInvoices3" ThisKey="Id" OtherKey="PreparedById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_TrnSalesInvoice4" Member="TrnSalesInvoices4" ThisKey="Id" OtherKey="SoldById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_TrnSalesInvoice5" Member="TrnSalesInvoices5" ThisKey="Id" OtherKey="UpdatedById" Type="TrnSalesInvoice" />
+      <Association Name="MstUser_MstArticleGroup" Member="MstArticleGroups" ThisKey="Id" OtherKey="CreatedById" Type="MstArticleGroup" />
+      <Association Name="MstUser_MstArticleGroup1" Member="MstArticleGroups1" ThisKey="Id" OtherKey="UpdatedById" Type="MstArticleGroup" />
+      <Association Name="MstUser_MstStatus" Member="MstStatus" ThisKey="Id" OtherKey="CreatedById" Type="MstStatus" />
+      <Association Name="MstUser_MstStatus1" Member="MstStatus1" ThisKey="Id" OtherKey="UpdatedById" Type="MstStatus" />
+      <Association Name="MstUser_MstTaxType" Member="MstTaxTypes" ThisKey="Id" OtherKey="CreatedById" Type="MstTaxType" />
+      <Association Name="MstUser_MstTaxType1" Member="MstTaxTypes1" ThisKey="Id" OtherKey="UpdatedById" Type="MstTaxType" />
+      <Association Name="MstUser_MstCompany" Member="MstCompanies" ThisKey="Id" OtherKey="CreatedById" Type="MstCompany" />
+      <Association Name="MstUser_MstCompany1" Member="MstCompanies1" ThisKey="Id" OtherKey="UpdatedById" Type="MstCompany" />
+      <Association Name="MstUser_MstUserForm" Member="MstUserForms" ThisKey="Id" OtherKey="UserId" Type="MstUserForm" />
+      <Association Name="MstUser_CrmMstDocument" Member="CrmMstDocuments" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmMstDocument" />
+      <Association Name="MstUser_CrmMstDocument1" Member="CrmMstDocuments1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmMstDocument" />
+      <Association Name="MstUser_CrmTrnSupport" Member="CrmTrnSupports" ThisKey="Id" OtherKey="AssignedToUserId" Type="CrmTrnSupport" />
+      <Association Name="MstUser_CrmTrnSupport1" Member="CrmTrnSupports1" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmTrnSupport" />
+      <Association Name="MstUser_CrmTrnSupport2" Member="CrmTrnSupports2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmTrnSupport" />
+      <Association Name="MstUser_CrmTrnLead" Member="CrmTrnLeads" ThisKey="Id" OtherKey="AssignedToUserId" Type="CrmTrnLead" />
+      <Association Name="MstUser_CrmTrnLead1" Member="CrmTrnLeads1" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmTrnLead" />
+      <Association Name="MstUser_CrmTrnLead2" Member="CrmTrnLeads2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmTrnLead" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment" Member="CrmTrnSoftwareDevelopments" ThisKey="Id" OtherKey="AssignedToUserId" Type="CrmTrnSoftwareDevelopment" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment1" Member="CrmTrnSoftwareDevelopments1" ThisKey="Id" OtherKey="CreatedByUserId" Type="CrmTrnSoftwareDevelopment" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment2" Member="CrmTrnSoftwareDevelopments2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="CrmTrnSoftwareDevelopment" />
+      <Association Name="AspNetUser_MstUser" Member="AspNetUser" ThisKey="UserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
+      <Association Name="MstAccount_MstUser" Member="MstAccount" ThisKey="IncomeAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstUser1" Member="MstAccount1" ThisKey="SupplierAdvancesAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstUser2" Member="MstAccount2" ThisKey="CustomerAdvancesAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstUser3" Member="MstAccount3" ThisKey="CustomerReturnAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstAccount_MstUser4" Member="MstAccount4" ThisKey="SupplierReturnAccountId" OtherKey="Id" Type="MstAccount" IsForeignKey="true" />
+      <Association Name="MstBranch_MstUser" Member="MstBranch" ThisKey="BranchId" OtherKey="Id" Type="MstBranch" IsForeignKey="true" />
+      <Association Name="MstCompany_MstUser" Member="MstCompany" ThisKey="CompanyId" OtherKey="Id" Type="MstCompany" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmMstDocument" Member="CrmMstDocuments">
+    <Type Name="CrmMstDocument">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DocumentName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DocumentType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DocumentURL" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DocumentGroup" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateUploaded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstUser_CrmMstDocument" Member="MstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmMstDocument1" Member="MstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnSupportAttachment" Member="CrmTrnSupportAttachments">
+    <Type Name="CrmTrnSupportAttachment">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SPId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Attachment" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AttachmentURL" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AttachmentType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="CrmTrnSupport_CrmTrnSupportAttachment" Member="CrmTrnSupport" ThisKey="SPId" OtherKey="Id" Type="CrmTrnSupport" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnSupport" Member="CrmTrnSupports">
+    <Type Name="CrmTrnSupport">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SPNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SPDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PointOfContact" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SDId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPerson" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPosition" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactEmail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPhoneNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Issue" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AssignedToUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmTrnSupport_CrmTrnActivity" Member="CrmTrnActivities" ThisKey="Id" OtherKey="SPId" Type="CrmTrnActivity" />
+      <Association Name="CrmTrnSupport_CrmTrnSupportAttachment" Member="CrmTrnSupportAttachments" ThisKey="Id" OtherKey="SPId" Type="CrmTrnSupportAttachment" />
+      <Association Name="MstArticle_CrmTrnSupport" Member="MstArticle" ThisKey="CustomerId" OtherKey="Id" Type="MstArticle" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSupport" Member="MstUser" ThisKey="AssignedToUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSupport1" Member="MstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSupport2" Member="MstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="CrmTrnSalesDelivery_CrmTrnSupport" Member="CrmTrnSalesDelivery" ThisKey="SDId" OtherKey="Id" Type="CrmTrnSalesDelivery" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnLead" Member="CrmTrnLeads">
+    <Type Name="CrmTrnLead">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LDNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LDDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPerson" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPosition" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactEmail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ContactPhoneNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ReferredBy" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="AssignedToUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmTrnLead_CrmTrnActivity" Member="CrmTrnActivities" ThisKey="Id" OtherKey="LDId" Type="CrmTrnActivity" />
+      <Association Name="CrmTrnLead_CrmTrnSalesDelivery" Member="CrmTrnSalesDeliveries" ThisKey="Id" OtherKey="LDId" Type="CrmTrnSalesDelivery" />
+      <Association Name="CrmMstProduct_CrmTrnLead" Member="CrmMstProduct" ThisKey="ProductId" OtherKey="Id" Type="CrmMstProduct" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnLead" Member="MstUser" ThisKey="AssignedToUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnLead1" Member="MstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnLead2" Member="MstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CrmTrnSoftwareDevelopment" Member="CrmTrnSoftwareDevelopments">
+    <Type Name="CrmTrnSoftwareDevelopment">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SDNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SDDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Issue" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IssueType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AssignedToUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TargetDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CloseDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CrmMstProduct_CrmTrnSoftwareDevelopment" Member="CrmMstProduct" ThisKey="ProductId" OtherKey="Id" Type="CrmMstProduct" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment" Member="MstUser" ThisKey="AssignedToUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment1" Member="MstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+      <Association Name="MstUser_CrmTrnSoftwareDevelopment2" Member="MstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
