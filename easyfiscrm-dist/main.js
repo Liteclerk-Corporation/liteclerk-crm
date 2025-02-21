@@ -101,7 +101,7 @@ __webpack_require__.r(__webpack_exports__);
 var AppSettings = /** @class */ (function () {
     function AppSettings() {
         // public defaultAPIURLHost: string = "http://localhost:53129";
-        this.defaultAPIURLHost = "https://easyfiscrm-easyfis-api.azurewebsites.net";
+        this.defaultAPIURLHost = "https://liteclerk-crm-api.liteclerk.com";
     }
     return AppSettings;
 }());
@@ -383,7 +383,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\eganp\source\repos\easyfiscrm-ui\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/noaholiverrigonan/Desktop/Developer/Github/liteclerk-crm/easyfiscrm-ui/src/main.ts */"./src/main.ts");
 
 
 /***/ })
